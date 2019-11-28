@@ -15,7 +15,7 @@
 package v1alpha1
 
 import (
-	"k8s.io/api/core/v1"
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -77,6 +77,8 @@ type VaultServiceSpec struct {
 
 // PodPolicy defines the policy for pods owned by vault operator.
 type PodPolicy struct {
+	// Persistent volume claim spec for etcd pods
+	PersistentVolumeClaimSpec *v1.PersistentVolumeClaimSpec `json:"PersistentVolumeClaimSpec,omitempty"`
 	// Resources is the resource requirements for the containers.
 	Resources v1.ResourceRequirements `json:"resources,omitempty"`
 }

@@ -28,7 +28,7 @@ import (
 	"github.com/coreos/etcd-operator/pkg/util/retryutil"
 	vaultapi "github.com/hashicorp/vault/api"
 	appsv1beta1 "k8s.io/api/apps/v1beta1"
-	"k8s.io/api/core/v1"
+	v1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
@@ -101,6 +101,7 @@ func DeployEtcdCluster(etcdCRCli etcdCRClient.Interface, v *api.VaultService) er
 					Name:  "ETCD_AUTO_COMPACTION_RETENTION",
 					Value: "1",
 				}},
+				PersistentVolumeClaimSpec: v.Spec.Pod.PersistentVolumeClaimSpec,
 			},
 		},
 	}
