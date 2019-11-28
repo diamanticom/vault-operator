@@ -75,6 +75,8 @@ func EtcdPeerTLSSecretName(vaultName string) string {
 // waits for all of its members to be ready.
 func DeployEtcdCluster(etcdCRCli etcdCRClient.Interface, v *api.VaultService) error {
 	size := 3
+	labels := LabelsForVault(v.Name)
+	labels["vault-etcd-cluster"] = fmt.Sprintf("%s-%s", v.GetName(), "etcd")
 	etcdCluster := &etcdCRAPI.EtcdCluster{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       etcdCRAPI.EtcdClusterResourceKind,
@@ -83,7 +85,7 @@ func DeployEtcdCluster(etcdCRCli etcdCRClient.Interface, v *api.VaultService) er
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      EtcdNameForVault(v.Name),
 			Namespace: v.Namespace,
-			Labels:    LabelsForVault(v.Name),
+			Labels:    labels,
 		},
 		Spec: etcdCRAPI.ClusterSpec{
 			Size: size,
@@ -102,6 +104,7 @@ func DeployEtcdCluster(etcdCRCli etcdCRClient.Interface, v *api.VaultService) er
 					Value: "1",
 				}},
 				PersistentVolumeClaimSpec: v.Spec.Pod.PersistentVolumeClaimSpec,
+				Affinity:                  v.Spec.Pod.Affinity,
 			},
 		},
 	}

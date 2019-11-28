@@ -79,6 +79,8 @@ type VaultServiceSpec struct {
 type PodPolicy struct {
 	// Persistent volume claim spec for etcd pods
 	PersistentVolumeClaimSpec *v1.PersistentVolumeClaimSpec `json:"PersistentVolumeClaimSpec,omitempty"`
+	// The scheduling constraints on etcd pods.
+	Affinity *v1.Affinity `json:"affinity,omitempty"`
 	// Resources is the resource requirements for the containers.
 	Resources v1.ResourceRequirements `json:"resources,omitempty"`
 }
